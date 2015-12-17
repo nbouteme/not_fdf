@@ -4,6 +4,7 @@
 
 #include "parser.h"
 #include "display.h"
+#include "graphics.h"
 
 int disp_handle_key(int key, t_display *d)
 {
@@ -15,16 +16,27 @@ int disp_handle_key(int key, t_display *d)
 	return 0;
 }
 
+void draw_line(t_graphics *g, t_point a, t_point b);
+
 int disp_expose(t_display *d)
 {
-	void *fb = mlx_new_image(d->conn, 420, 420);
-	int osef;
-	
-	int *data = (int*)mlx_get_data_addr(fb, &osef, &osef, &osef);
-	data[420 * 10 + 42] = 0x00FF0000;
-	
-	mlx_put_image_to_window(d->conn, d->win, fb, 0, 0);
-	mlx_destroy_image(d->conn, fb);
+	t_point arr[] = {
+		(t_point){50, 50},
+		(t_point){200, 50},
+		(t_point){350, 50},
+		(t_point){50, 200},
+		(t_point){350, 200},
+		(t_point){50, 350},
+		(t_point){200, 350},
+		(t_point){350, 350}
+	};
+	t_graphics *g;
+	g = d->g;
+	draw_line(g, arr[1], arr[6]);
+	draw_line(g, arr[3], arr[4]);
+
+	draw_line(g, arr[0], arr[3]);
+	present(g);
 	return 0;
 }
 
@@ -40,13 +52,14 @@ t_display *new_display(t_model *m)
 
 	ret = malloc(sizeof(*ret));
 	ret->conn = mlx_init();
-	ret->win = mlx_new_window(ret->conn, 420, 420, "FdF");
-
+	ret->dim.w = 420;
+	ret->dim.h = 420;
+	ret->win = mlx_new_window(ret->conn, ret->dim.w, ret->dim.h, "FdF");
+	ret->g = new_graphics(ret);
+	ret->model = m;
 	mlx_key_hook(ret->win, &disp_handle_key, ret);
 	mlx_expose_hook(ret->win, &disp_expose, ret);
-	mlx_loop_hook(ret->conn, &disp_expose, ret);
-	
-	ret->model = m;
+	mlx_loop_hook(ret->conn, &disp_expose, ret);	
 	return ret;
 }
 

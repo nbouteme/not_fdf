@@ -29,6 +29,7 @@ SRC = 	mat3.c		 	\
 		parse_file.c	\
 		flatten.c		\
 		display.c		\
+		graphics.c		\
 		main.c			\
 
 OBJ = $(SRC:.c=.o)

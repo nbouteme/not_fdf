@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "parser.h"
 
-void fillelem(int *elemptr, t_sparse_model *sm)
+void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 {
 	int i;
 	int j;
@@ -13,16 +13,15 @@ void fillelem(int *elemptr, t_sparse_model *sm)
 		j = -1;
 		while(++j < sm->w)
 		{
+			vertptr->x = j;
+			vertptr->y = i;
+			++vertptr;
+			if (i != sm->h - 1 && j != sm->w - 1)
+				*elemptr++ = (i * sm->w) + j;
 			if(j < sm->w - 1)
-			{
-				*elemptr++ = (i * sm->w) + j;
 				*elemptr++ = (i * sm->w) + j + 1;
-			}
 			if(i < sm->h - 1)
-			{
-				*elemptr++ = (i * sm->w) + j;
 				*elemptr++ = ((i + 1) * sm->w) + j;
-			}
 		}
 	}
 }
@@ -47,7 +46,8 @@ void fill_vert_array(t_list *elem, void *up)
 ** Pour une map de w*h, il y a (w-1 * h-1) sommet qui genere 2 segment, w qui en generent 1,
 ** h qui en genere 1, et un qui n'en genere pas.
 ** t = (2 * (w - 1 * h - 1)) + w - 1 + h - 1. pour une 3*3:
-** t = (3 * (w - 1 * h - 1)). pour une 3*3:
+** t = (3 * (w - 1 * h - 1)) = 12 segment pour une 3*3:
+** un segment est une paire d'int, donc il faut allouer 2 * sizeof int * 12
 */
 
 t_model *flatten_model(t_sparse_model *sm)
@@ -60,6 +60,6 @@ t_model *flatten_model(t_sparse_model *sm)
 	vertptr = ret->verts;
 	ft_lstiterup(sm->verts, &fill_vert_array, (void*)&vertptr);
 	ret->elements = malloc(2 * sizeof(int) * (3 * ((sm->h - 1) * (sm->w - 1))));
-	fillelem(ret->elements, sm);
+	fillelem(ret->verts, ret->elements, sm);
 	return ret;
 }
