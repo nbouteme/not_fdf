@@ -19,9 +19,9 @@ t_graphics *new_graphics(t_display *d)
 
 int is_outside(t_graphics *g, t_point a)
 {
-	if(g->dim.w < a.w)
+	if(a.w < 0 || g->dim.w < a.w)
 		return 1;
-	if(g->dim.h < a.h)
+	if(a.h < 0|| g->dim.h < a.h)
 		return 2;
 	return 0;
 }
@@ -48,32 +48,69 @@ void draw_point(t_graphics *g, t_point pos)
 #include <stdio.h>
 #include <libft.h>
 
+#define sign(x) ((x > 0)? 1 : ((x < 0)? -1: 0))
+#define abs(x) ((x < 0)? -(x) : (x))
+
 void draw_line(t_graphics *g, t_point a, t_point b)
 {
-	int hwg[7];
+	int oh_boy[7];
 
-	hwg[0] = (b.w - a.w < 0 ? -b.w - a.w : b.w - a.w);
-	hwg[1] = (b.h - a.h < 0 ? -b.h - a.h : b.h - a.h);
-	hwg[2] = (0x80000000 & b.w - a.w ? -1 : 1);
-	hwg[3] = (0x80000000 & b.h - a.h ? -1 : 1);
-	if ((hwg[5] = hwg[1] > hwg[0]))
-		ft_swap_any(&hwg[0], &hwg[1], sizeof(int));
-	hwg[6] = 2 * (hwg[1] - hwg[0]);
-	hwg[4] = -1;
-	while (++hwg[4] < hwg[0])
+	oh_boy[0] = abs(b.w - a.w);
+	oh_boy[1] = abs(b.h - a.h);
+	oh_boy[2] = sign(b.w - a.w);
+	oh_boy[3] = sign(b.h - a.h);
+	if ((oh_boy[4] = oh_boy[1] > oh_boy[0]))
+		ft_swap_any(&oh_boy[0], &oh_boy[1], sizeof(int));
+	oh_boy[5] = 2 * oh_boy[1] - oh_boy[0];
+	oh_boy[6] = -1;
+	while (++oh_boy[6] < oh_boy[0])
 	{
 		draw_point(g, a);
-		while (hwg[6] >= 0)
+		while (oh_boy[5] >= 0)
 		{
-			hwg[6] -= 2 * hwg[0];
-			hwg[5] ? (a.w += hwg[2]) : (a.h += hwg[3]);
+			oh_boy[5] = oh_boy[5] - 2 * oh_boy[0];
+			oh_boy[4] ? (a.w += oh_boy[2]) : (a.h += oh_boy[3]);
 		}
-		hwg[6] += 2 * hwg[1];
-		hwg[5] ? (a.h += hwg[3]) : (a.w += hwg[2]);
+		oh_boy[5] = oh_boy[5] + 2*oh_boy[1];
+		oh_boy[4] ? (a.h += oh_boy[3]) : (a.w += oh_boy[2]);
 	}
+}
+
+t_point ndc_to_screen(t_graphics *g, t_point ndc)
+{
+	int ppn, xoff, yoff;
+	if(g->dim.w >= g->dim.h )
+	{
+		ppn = g->dim.h;
+		xoff = (g->dim.w - g->dim.h) >> 1;
+		yoff = 0;
+	}
+	else
+	{
+		ppn = g->dim.w;
+		xoff = 0;
+		yoff = (g->dim.h - g->dim.w) >> 1;
+	}
+	return (t_point){ndc.w * ppn + xoff, g->dim.w - (ndc.h * ppn) + yoff};
+}
+
+void draw_nline(t_graphics *g, t_vec4 n1, t_vec4 n2)
+{
+	t_point a;
+	t_point b;
+
+	a = ndc_to_screen(g, (t_point){(*n1)[0], (*n1)[1]});
+	b = ndc_to_screen(g, (t_point){(*n2)[0], (*n2)[1]});
+	draw_line(g, a, b);
 }
 
 void present(t_graphics *g)
 {
 	mlx_put_image_to_window(g->d->conn, g->d->win, g->int_img, 0, 0);
 }
+
+void clear_graphics(t_graphics *g)
+{
+	memset(g->fb, 0, 4 * g->dim.w * g->dim.h);
+}
+

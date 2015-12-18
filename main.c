@@ -11,7 +11,7 @@
 
 int check_input(char *s)
 {
-	const char *auth = " \n0123456789-xABCDEF";
+	const char *auth = " \n0123456789-,xABCDEF";
 	while(*s)
 		if(ft_strindexof(auth, *s) == -1)
 			return 0;
@@ -38,6 +38,7 @@ char	*readfile(int fd, int (*check)(char *))
 		ret = ft_strjoin(ret, buf);
 		free(tmp);
 	}
+	free(buf);
 	return (ret);
 }
 

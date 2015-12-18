@@ -2,6 +2,7 @@
 #define PARSER_H
 
 #include <libft.h>
+#include "mat.h"
 
 char		**ft_strtok(const char *str, char c);
 
@@ -24,6 +25,9 @@ typedef struct	s_model
 {
 	t_vertex *verts;
 	int *elements;
+	t_mat4 model;
+	int w;
+	int h;
 }				t_model;
 
 t_sparse_model *parse_file(char **file);

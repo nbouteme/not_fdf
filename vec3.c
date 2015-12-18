@@ -1,6 +1,6 @@
 #include "mat.h"
 
-t_vec3 vec3_copy(const t_vec3 rhs)
+t_vec3 vec3_copy(t_cvec3 rhs)
 {
 	t_vec3 ret;
 
@@ -9,14 +9,14 @@ t_vec3 vec3_copy(const t_vec3 rhs)
 	return ret;
 }
 
-float vec3_norme(const t_vec3 rhs)
+float vec3_norme(t_cvec3 rhs)
 {
 	return sqrt(((*rhs)[0] * (*rhs)[0]) +
 				((*rhs)[1] * (*rhs)[1]) +
 				((*rhs)[2] * (*rhs)[2]));
 }
 
-t_vec3 vec3_normalize(const t_vec3 rhs)
+t_vec3 vec3_normalize(t_cvec3 rhs)
 {
 	float norme;
 	t_vec3 ret;
@@ -29,7 +29,7 @@ t_vec3 vec3_normalize(const t_vec3 rhs)
 	return ret;
 }
 
-t_vec3 vec3_cross(const t_vec3 a, const t_vec3 b)
+t_vec3 vec3_cross(t_cvec3 a, t_cvec3 b)
 {
 	t_vec3 ret;
 
@@ -40,7 +40,7 @@ t_vec3 vec3_cross(const t_vec3 a, const t_vec3 b)
 	return ret;
 }
 
-t_vec3 vec3_add(const t_vec3 a, const t_vec3 b)
+t_vec3 vec3_add(t_cvec3 a, t_cvec3 b)
 {
 	t_vec3 ret;
 
@@ -51,7 +51,7 @@ t_vec3 vec3_add(const t_vec3 a, const t_vec3 b)
 	return ret;
 }
 
-t_vec3 vec3_sub(const t_vec3 a, const t_vec3 b)
+t_vec3 vec3_sub(t_cvec3 a, t_cvec3 b)
 {
 	t_vec3 ret;
 
@@ -60,4 +60,16 @@ t_vec3 vec3_sub(const t_vec3 a, const t_vec3 b)
 	(*ret)[1] = (*a)[1] - (*b)[1];
 	(*ret)[2] = (*a)[2] - (*b)[2];
 	return ret;
+}
+
+t_cvec3 vec3_up()
+{
+	const static float ret[3] = {0, 0, -1};
+	return &ret;
+}
+
+t_cvec3 vec3_zero()
+{
+	const static float ret[3] = {0, 0, 0};
+	return &ret;
 }

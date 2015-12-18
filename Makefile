@@ -24,6 +24,7 @@ LINK = ft m mlx Xext X11
 SRC = 	mat3.c		 	\
 	 	mat4.c		 	\
 		vec3.c		 	\
+		vec4.c		 	\
 		proj.c		 	\
 		str_utils.c		\
 		parse_file.c	\

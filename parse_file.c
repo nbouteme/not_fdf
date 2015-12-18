@@ -19,7 +19,7 @@ int parse_height(char **file, t_vertex *v)
 	*file += **file == '-';
 	while(ft_isdigit(*file[0]))
 		file[0]++;
-	return **file == ' ' || **file == '\n' || !**file;
+	return **file == ',' || **file == ' ' || **file == '\n' || !**file;
 }
 
 unsigned ft_atoi_base(const char *s, int base)
@@ -40,6 +40,7 @@ unsigned ft_atoi_base(const char *s, int base)
 
 int parse_color(char **file, t_vertex *v)
 {
+	(*file)++;
 	*file += **file == '0';
 	*file += **file == 'x';
 	v->color = ft_atoi_base(*file, 16);
@@ -52,9 +53,9 @@ int parse_vertex(char **file, t_sparse_model *m)
 {
 	t_vertex v;
 	if(!parse_height(file, &v))
-		return 0;
-	if(*file[0] == ',' && parse_color(file, &v))
-		return 0;
+			abort();
+	if(*file[0] == ',' && !parse_color(file, &v))
+			abort();
 	ft_lstpush(&m->verts, ft_lstnew(&v, sizeof(v)));
 	return 1;
 }
@@ -68,16 +69,18 @@ int parse_line(char *line, t_sparse_model *m)
 	tmp = 0;
 	while(1)
 	{
-		if(!parse_vertex(&line, m))
-			return 0;
-		else
-			++tmp;
 		while(*line == ' ')
 			line++;
+		if(!parse_vertex(&line, m))
+			abort();
+		else
+			++tmp;
 		if(!*line)
 			break ;
 	}
 	m->w = m->w ? m->w : tmp;
+	if(!(tmp == m->w))
+		abort();
 	return tmp == m->w;
 }
 
@@ -89,10 +92,10 @@ t_sparse_model *parse_file(char **file)
 	while (1)
 	{
 		if(!parse_line(*file++, m))
-			return 0;
+			abort();
 		m->h++;
 		if(ft_strcmp(*file++, "\n") != 0)
-			return 0;
+			abort();
 		if(!*file)
 			break ;
 	}

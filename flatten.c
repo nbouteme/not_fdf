@@ -16,12 +16,16 @@ void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 			vertptr->x = j;
 			vertptr->y = i;
 			++vertptr;
-			if (i != sm->h - 1 && j != sm->w - 1)
-				*elemptr++ = (i * sm->w) + j;
 			if(j < sm->w - 1)
+			{
+				*elemptr++ = (i * sm->w) + j;
 				*elemptr++ = (i * sm->w) + j + 1;
+			}
 			if(i < sm->h - 1)
+			{
+				*elemptr++ = (i * sm->w) + j;
 				*elemptr++ = ((i + 1) * sm->w) + j;
+			}
 		}
 	}
 }
@@ -50,16 +54,34 @@ void fill_vert_array(t_list *elem, void *up)
 ** un segment est une paire d'int, donc il faut allouer 2 * sizeof int * 12
 */
 
+#include "proj.h"
+
+void free_verts(void *d, size_t s)
+{
+	(void)s;
+	free(d);
+}
+
 t_model *flatten_model(t_sparse_model *sm)
 {
 	t_model *ret;
 	t_vertex *vertptr;
-
+	t_vec3 pos;
+	
 	ret = malloc(sizeof(*ret));
 	ret->verts = malloc(sizeof(t_vertex) * sm->h * sm->w);
 	vertptr = ret->verts;
 	ft_lstiterup(sm->verts, &fill_vert_array, (void*)&vertptr);
 	ret->elements = malloc(2 * sizeof(int) * (3 * ((sm->h - 1) * (sm->w - 1))));
 	fillelem(ret->verts, ret->elements, sm);
+	ret->w = sm->w;
+	ret->h = sm->h;
+	pos = ft_memalloc(sizeof(*pos));
+	(*pos)[0] = -ret->w / 2;
+	(*pos)[1] = -ret->h / 2;
+	ret->model = translation(vec3_zero());
+	free(pos);
+	ft_lstdel(&sm->verts, &free_verts);
+	free(sm);
 	return ret;
 }
