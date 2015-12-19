@@ -10,25 +10,10 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME = fdf
+P_FOLDER	= libft
+P_OUTPUT	= libft.a
 
-OPTS = -g
+P_INCDIRS	= $(P_FOLDER)
+P_LDIRS		= $(P_FOLDER)
 
-SRC = 	mat3.c		 	\
-	 	mat4.c		 	\
-		vec3.c		 	\
-		vec4.c		 	\
-		proj.c		 	\
-		str_utils.c		\
-		parse_file.c	\
-		flatten.c		\
-		display.c		\
-		graphics.c		\
-		clip.c		\
-		main.c			\
-
-LIBS = m
-
-#******************************************************************************#
-
-include mkgen.mk
+LIBS += ft

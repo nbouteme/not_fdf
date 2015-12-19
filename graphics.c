@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include "display.h"
 #include "graphics.h"
+#include "clip.h"
+
+void draw_line_bare(t_graphics *g, t_point a, t_point b);
 
 t_graphics *new_graphics(t_display *d)
 {
@@ -19,9 +22,9 @@ t_graphics *new_graphics(t_display *d)
 
 int is_outside(t_graphics *g, t_point a)
 {
-	if(a.w < 0 || g->dim.w < a.w)
+	if(a.w < 0 || g->dim.w <= a.w)
 		return 1;
-	if(a.h < 0|| g->dim.h < a.h)
+	if(a.h < 0|| g->dim.h <= a.h)
 		return 2;
 	return 0;
 }
@@ -48,10 +51,16 @@ void draw_point(t_graphics *g, t_point pos)
 #include <stdio.h>
 #include <libft.h>
 
+void draw_line(t_graphics *g, t_point a, t_point b)
+{
+	if(clip(g, &a, &b))
+		draw_line_bare(g, a, b);		
+}
+
 #define sign(x) ((x > 0)? 1 : ((x < 0)? -1: 0))
 #define abs(x) ((x < 0)? -(x) : (x))
 
-void draw_line(t_graphics *g, t_point a, t_point b)
+void draw_line_bare(t_graphics *g, t_point a, t_point b)
 {
 	int oh_boy[7];
 

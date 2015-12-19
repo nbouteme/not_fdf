@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "display.h"
 #include "graphics.h"
+int disp_expose(t_display *d);
 
 int disp_handle_key(int key, t_display *d)
 {
@@ -26,6 +27,7 @@ int disp_handle_key(int key, t_display *d)
 		--(*d->position)[2];
 	if (key == XK_KP_Subtract)
 		++(*d->position)[2];
+	disp_expose(d);
 	return 0;
 }
 
@@ -83,22 +85,22 @@ int disp_expose(t_display *d)
 	tmp = 0;
 	tmp = mat4_mult(d->camera, d->model->model);
 	mvp = mat4_mult(tmp, d->proj);
-	while(i < (6 * (d->model->h - 1) * (d->model->w - 1)))
+	while(i < (5 * (d->model->h - 1) * (d->model->w - 1)))
 	{
 		t_vertex a;
 		t_vertex b;
 		t_vec4 pa, pb;
 		t_vec4 ra, rb;
+
 		a = ptr[d->model->elements[i++]];
 		b = ptr[d->model->elements[i++]];
 
 		pa = vec4_from_a4((float[]){a.x, a.y, a.z, 1});
 		pb = vec4_from_a4((float[]){b.x, b.y, b.z, 1});
-
 		ra = to_screen_space(d->dim, project(mvp, pa));
 		rb = to_screen_space(d->dim, project(mvp, pb));
-
-		draw_line(g, (t_point){(*ra)[0], (*ra)[1]}, (t_point){(*rb)[0], (*rb)[1]});
+		if(0 < (*ra)[2] && (*ra)[2] < 1 && 0 < (*rb)[2] && (*rb)[2] < 1)
+			draw_line(g, (t_point){(*ra)[0], (*ra)[1]}, (t_point){(*rb)[0], (*rb)[1]});
 		free(ra);
 		free(rb);
 		free(pa);
@@ -132,9 +134,9 @@ t_display *new_display(t_model *m)
 	ret->position = ft_memalloc(sizeof(*ret->position));
 	ret->camera = 0;
 	ret->proj = 0;
-	(*ret->position)[0] = 5;
-	(*ret->position)[1] = 5;
-	(*ret->position)[2] = 25;
+	(*ret->position)[0] = 5.75;
+	(*ret->position)[1] = 5.75;
+	(*ret->position)[2] = 25.75;
 	mlx_key_hook(ret->win, &disp_handle_key, ret);
 	mlx_expose_hook(ret->win, &disp_expose, ret);
 	mlx_loop_hook(ret->conn, &disp_expose, ret);	

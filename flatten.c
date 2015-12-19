@@ -6,7 +6,7 @@ void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 {
 	int i;
 	int j;
-
+	int *e = elemptr;
 	i = -1;
 	while (++i < sm->h)
 	{
@@ -28,6 +28,7 @@ void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 			}
 		}
 	}
+	printf("%ld\n", elemptr - e - 1);
 }
 
 void fill_vert_array(t_list *elem, void *up)
