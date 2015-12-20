@@ -46,21 +46,23 @@ char	*readfile(int fd, int (*check)(char *))
 int main(int argc, char **argv)
 {
 	int fd;
+	char *file;
+	char **a_file;
+	t_sparse_model *sm;
+	t_model *m;
+
 	if(argc <= 1)
 		return 1;
 	fd = open(argv[1], O_RDONLY);
 	if(fd == -1)
 		return 2;
-	char *file = readfile(fd, &check_input);
-
+	file = readfile(fd, &check_input);
 	if(!file)
-		return 1;
-
-	char **a_file = ft_strtok(file, '\n');
-	t_sparse_model *sm = parse_file(a_file);
-
-	t_model *m = flatten_model(sm);
-
+		return 3;
+	a_file = ft_strtok(file, '\n');
+	sm = parse_file(a_file);
+	if(!sm)
+		return 4;
+	m = flatten_model(sm);
 	run_display(new_display(m));
-	printf("%p\n", m);
 }

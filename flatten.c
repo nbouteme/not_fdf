@@ -3,7 +3,7 @@
 #include <libft/math.h>
 #include "parser.h"
 
-void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
+size_t fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 {
 	int i;
 	int j;
@@ -29,7 +29,7 @@ void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 			}
 		}
 	}
-	printf("%ld\n", elemptr - e - 1);
+	return (elemptr - e);
 }
 
 void fill_vert_array(t_list *elem, void *up)
@@ -53,6 +53,7 @@ void fill_vert_array(t_list *elem, void *up)
 ** h qui en genere 1, et un qui n'en genere pas.
 ** t = (2 * (w - 1 * h - 1)) + w - 1 + h - 1. pour une 3*3:
 ** t = (3 * (w - 1 * h - 1)) = 12 segment pour une 3*3:
+** t = (3 * (1) + 1) = 12 segment pour une 3*3:
 ** un segment est une paire d'int, donc il faut allouer 2 * sizeof int * 12
 */
 
@@ -72,8 +73,8 @@ t_model *flatten_model(t_sparse_model *sm)
 	ret->verts = malloc(sizeof(t_vertex) * sm->h * sm->w);
 	vertptr = ret->verts;
 	ft_lstiterup(sm->verts, &fill_vert_array, (void*)&vertptr);
-	ret->elements = malloc(2 * sizeof(int) * (3 * ((sm->h - 1) * (sm->w - 1))));
-	fillelem(ret->verts, ret->elements, sm);
+	ret->elements = malloc(sizeof(int) * ((4 * sm->w * sm->h) - sm->w - sm->h));
+	ret->e_sz = fillelem(ret->verts, ret->elements, sm);
 	ret->w = sm->w;
 	ret->h = sm->h;
 	pos = ft_memalloc(sizeof(*pos));

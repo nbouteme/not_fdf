@@ -1,10 +1,11 @@
 #include <libft/std.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "parser.h"
 
 /*
-** file    := <line> <newline> [ <line> <newline> ]
+** file    := <line> <newline> [ <line> <newline> ]...
 ** line    := <vertice> [ <space>... <vertice> ]
 ** vertice := <height> [,color]
 ** height  := entier en texte
@@ -15,6 +16,8 @@
 
 int parse_height(char **file, t_vertex *v)
 {
+	if (!ft_isdigit(*file[0]))
+		return 0;
 	v->z = ft_atoi(*file);
 	*file += **file == '-';
 	while(ft_isdigit(*file[0]))
@@ -53,14 +56,15 @@ int parse_vertex(char **file, t_sparse_model *m)
 {
 	t_vertex v;
 	if(!parse_height(file, &v))
-			abort();
+		return 0;
 	if(*file[0] == ',' && !parse_color(file, &v))
-			abort();
-	ft_lstpush(&m->verts, ft_lstnew(&v, sizeof(v)));
+		return 0;
+	t_list *a = ft_lstnew(&v, sizeof(v));
+	ft_lstpush(&m->verts, a);
+	free(a->content);
+	free(a);
 	return 1;
 }
-
-#include <stdio.h>
 
 int parse_line(char *line, t_sparse_model *m)
 {
@@ -72,15 +76,14 @@ int parse_line(char *line, t_sparse_model *m)
 		while(*line == ' ')
 			line++;
 		if(!parse_vertex(&line, m))
-			abort();
-		else
-			++tmp;
+			return 0;
+		++tmp;
 		if(!*line)
 			break ;
 	}
 	m->w = m->w ? m->w : tmp;
 	if(!(tmp == m->w))
-		abort();
+		return 0;
 	return tmp == m->w;
 }
 
@@ -89,15 +92,17 @@ t_sparse_model *parse_file(char **file)
 	t_sparse_model *m;
 
 	m = ft_memset(malloc(sizeof(*m)), 0, sizeof(*m));
-	while (1)
+	while (*file)
 	{
 		if(!parse_line(*file++, m))
-			abort();
+			return 0;
 		m->h++;
 		if(ft_strcmp(*file++, "\n") != 0)
-			abort();
+			return 0;
 		if(!*file)
 			break ;
 	}
-	return m;
+	if (m)
+		return m->w * m->h > 1 ? m : 0;
+	return (0);
 }
