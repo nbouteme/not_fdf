@@ -1,4 +1,4 @@
-#include <libft.h>
+#include <libft/std.h>
 #include <stdlib.h>
 
 #include "parser.h"

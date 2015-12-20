@@ -2,12 +2,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <libft.h>
+
+#include <libft/std.h>
+#include <libft/mlx.h>
 
 #define B_SIZE (1 << 16)
 
 #include "parser.h"
-#include "display.h"
 
 int check_input(char *s)
 {
@@ -42,7 +43,6 @@ char	*readfile(int fd, int (*check)(char *))
 	return (ret);
 }
 
-#include <mlx.h>
 int main(int argc, char **argv)
 {
 	int fd;

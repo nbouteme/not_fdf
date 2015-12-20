@@ -10,62 +10,48 @@
 #                                                                              #
 #******************************************************************************#
 
-.SUFFIXES:
+ifndef SRC
+SRC := $(shell ls | grep \\.c$)
+endif
 
+LIBS =
+DEPS =
+$(foreach s,$(SRC), $(eval DEPS += $(shell gcc -MM $s -Ilibft/includes |\
+										   tr -d \\\\ | sed s/$(basename $s).o:\ $s// |\
+										   tr ' ' '\n' | grep '^libft' | sort | uniq |\
+										   cut -d '/' -f 4 | sed s/\\.h//)))
+OBUILDLIBS := $(DEPS)
+.SUFFIXES:
 CC = clang
 CFLAGS = -Wall -Wextra -Werror $(OPTS)
 OBJ = $(SRC:.c=.o)
-
 ECHO = echo
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 ECHO = echo -e
 endif
-
-PHONY=
-
-FOLDERS = $(shell find . -maxdepth 1 -type d -printf %f\\n | tail -n +2 | grep -v ^cfg$ | grep -v ^\\.$ )
-$(foreach f, $(FOLDERS), $(if $(or $(shell stat $f/$f.mk 2>/dev/null), $(shell stat cfg/$f.mk 2>/dev/null)), $(eval DEPS += $f)))
-
-all: $(DEPS)
+UNIQ := $(shell mktemp)
+$(shell make -s -C libft OBUILDLIBS="$(OBUILDLIBS)" > $(UNIQ))
+include $(UNIQ)
+INCDIRS += -Ilibft/includes
+$(eval LIBDIRS += $(addprefix -L,$(LDEP)))
+$(eval LIBS += $(DEP))
+all: 
+	$(foreach dep,$(PDEP), $(if $(shell make -C $(dep) &> /dev/null), $(eval )))
 	@$(MAKE) -s $(NAME)
-
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCDIRS) -c $^
 	@$(ECHO) "\033[0;32m[✓] Built C object" $@
-
 $(NAME): $(OBJ)
 	@$(ECHO) "\033[0;34m--------------------------------"
 	@$(CC) -o $(NAME) $(CFLAGS) $(OBJ) $(LIBDIRS) $(addprefix -l,$(LIBS)) $(INCDIRS)
 	@$(ECHO) "\033[0;31m[✓] Linked C executable" $(NAME)
-
 clean:
 	@/bin/rm -rf $(OBJ)
 	@$(ECHO) "\033[0;33m[✓] Removed object files" $(OBJ)
-
 fclean: clean
 	@/bin/rm -rf $(NAME)
 	@$(ECHO) "\033[0;33m[✓] Removed executable" $(NAME)
-
 re: fclean
 	@$(MAKE) all
-
-define generate_dep_rule
-$1: $1/$(P_OUTPUT)
-
-$1/$(P_OUTPUT):
-	@$(ECHO) "\033[0;34m[-] Checking dependency " $(1)
-	@$(MAKE) -s -C $(P_FOLDER)
-endef
-
-define def_rules
-$(eval include cfg/$1.mk)
-INCDIRS += $(addprefix -I, $(P_INCDIRS))
-LIBDIRS += $(addprefix -L, $(P_LDIRS))
-PHONY += $1
-$(call generate_dep_rule,$1);
-endef
-
-$(foreach dep, $(DEPS), $(eval $(call def_rules,$(dep))))
-
 .PHONY: clean fclean re cleandeps fcleandeps $(PHONY)

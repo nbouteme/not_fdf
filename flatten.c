@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <libft/math.h>
 #include "parser.h"
 
 void fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
@@ -54,8 +55,6 @@ void fill_vert_array(t_list *elem, void *up)
 ** t = (3 * (w - 1 * h - 1)) = 12 segment pour une 3*3:
 ** un segment est une paire d'int, donc il faut allouer 2 * sizeof int * 12
 */
-
-#include "proj.h"
 
 void free_verts(void *d, size_t s)
 {
