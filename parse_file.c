@@ -97,7 +97,7 @@ t_sparse_model *parse_file(char **file)
 		if(!parse_line(*file++, m))
 			return 0;
 		m->h++;
-		if(ft_strcmp(*file++, "\n") != 0)
+		if(!*file || ft_strcmp(*file++, "\n") != 0)
 			return 0;
 		if(!*file)
 			break ;
