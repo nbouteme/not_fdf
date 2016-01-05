@@ -16,7 +16,7 @@
 
 int parse_height(char **file, t_vertex *v)
 {
-	if (!ft_isdigit(*file[0]))
+	if (!(ft_isdigit(*file[0]) || *file[0] == '-'))
 		return 0;
 	v->z = ft_atoi(*file);
 	*file += **file == '-';
@@ -104,5 +104,5 @@ t_sparse_model *parse_file(char **file)
 	}
 	if (m)
 		return m->w * m->h > 1 ? m : 0;
-	return (0);
+	return 0;
 }
