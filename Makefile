@@ -11,7 +11,8 @@
 #******************************************************************************#
 
 NAME = fdf
-OPTS = -O3 -march=native -mtune=native
+#OPTS = -O3 -march=native -mtune=native
+OPTS = -g
 
 ##################
 include mkgen.mk #

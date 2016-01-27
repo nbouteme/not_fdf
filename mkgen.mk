@@ -23,7 +23,8 @@ $(foreach s,$(SRC), $(eval DEPS += $(shell gcc -MM $s -Ilibft/includes |\
 OBUILDLIBS := $(DEPS)
 .SUFFIXES:
 CC = clang
-CFLAGS = -Wall -Wextra -Werror $(OPTS)
+WFLAGS = -Wall -Wextra -Werror
+CFLAGS = $(OPTS)
 OBJ = $(SRC:.c=.o)
 ECHO = echo
 UNAME := $(shell uname)
@@ -37,14 +38,14 @@ INCDIRS += -Ilibft/includes
 $(eval LIBDIRS += $(addprefix -L,$(LDEP)))
 $(eval LIBS += $(DEP))
 all: 
-	$(foreach dep,$(PDEP), $(if $(shell make -C $(dep) &> /dev/null), $(eval )))
+	$(foreach dep,$(PDEP), $(if $(shell make -C $(dep) CFLAGS=$(CFLAGS) &> /dev/null), $(eval )))
 	$(MAKE) -s $(NAME)
 %.o: %.c
-	@$(CC) $(CFLAGS) $(INCDIRS) -c $^
+	@$(CC) $(WFLAGS) $(CFLAGS) $(INCDIRS) -c $^
 	@$(ECHO) "\033[0;32m[✓] Built C object" $@
 $(NAME): $(OBJ)
 	@$(ECHO) "\033[0;34m--------------------------------"
-	@$(CC) -o $(NAME) $(CFLAGS) $(OBJ) $(LIBDIRS) $(addprefix -l,$(LIBS)) $(INCDIRS) $(SUPF)
+	@$(CC) -o $(NAME) $(WFLAGS) $(CFLAGS) $(OBJ) $(LIBDIRS) $(addprefix -l,$(LIBS)) $(INCDIRS) $(SUPF)
 	@$(ECHO) "\033[0;31m[✓] Linked C executable" $(NAME)
 clean:
 	@/bin/rm -rf $(OBJ)
