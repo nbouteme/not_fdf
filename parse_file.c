@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_file.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/01/27 16:42:29 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/01/27 16:48:40 by nbouteme         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libft/std.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -12,100 +24,94 @@
 ** color   := 0xRRGGBB
 ** space   := ' '
 ** newline := '\n'
- */
+*/
 
-int parse_height(char **file, t_vertex *v)
+int				parse_height(char **file, t_vertex *v)
 {
 	if (!(ft_isdigit(*file[0]) || *file[0] == '-'))
-		return 0;
+		return (0);
 	v->z = ft_atoi(*file);
 	*file += **file == '-';
-	while(ft_isdigit(*file[0]))
+	while (ft_isdigit(*file[0]))
 		file[0]++;
-	return **file == ',' || **file == ' ' || **file == '\n' || !**file;
+	return (**file == ',' || **file == ' ' || **file == '\n' || !**file);
 }
 
-unsigned ft_atoi_base(const char *s, int base)
+int				parse_color(char **file, t_vertex *v)
 {
-	const char *b = "0123456789ABCDEF";
-	int i;
+	const char	*b = "0123456789ABCDEF";
+	int			i;
 
-	i = 0;
-	while (ft_strindexof(b, *s) != -1)
-	{
-		i += ft_strindexof(b, *s++);
-		if (ft_strindexof(b, *s) == -1)
-			break ;
-		i *= base;
-	}
-	return (i);
-}
-
-int parse_color(char **file, t_vertex *v)
-{
 	(*file)++;
 	*file += **file == '0';
 	*file += **file == 'x';
-	v->color = ft_atoi_base(*file, 16);
-	while(ft_isdigit(*file[0]) || ('A' <= *file[0] && *file[0] <= 'Z'))
+	while (ft_strindexof(b, *s) != -1)
+	{
+		v->color += ft_strindexof(b, *s++);
+		if (ft_strindexof(b, *s) == -1)
+			break ;
+		v->color *= base;
+	}
+	while (ft_isdigit(*file[0]) || ('A' <= *file[0] && *file[0] <= 'Z'))
 		file[0]++;
-	return **file == ' ' || **file == '\n' || !**file;
+	return (**file == ' ' || **file == '\n' || !**file);
 }
 
-int parse_vertex(char **file, t_sparse_model *m)
+int				parse_vertex(char **file, t_sparse_model *m)
 {
-	t_vertex v;
-	if(!parse_height(file, &v))
-		return 0;
-	if(*file[0] == ',' && !parse_color(file, &v))
-		return 0;
-	t_list *a = ft_lstnew(&v, sizeof(v));
+	t_vertex	v;
+	t_list		*a;
+
+	if (!parse_height(file, &v))
+		return (0);
+	if (*file[0] == ',' && !parse_color(file, &v))
+		return (0);
+	a = ft_lstnew(&v, sizeof(v));
 	ft_lstpush(&m->verts, a);
 	free(a->content);
 	free(a);
-	return 1;
+	return (1);
 }
 
-int parse_line(char *line, t_sparse_model *m)
+int				parse_line(char *line, t_sparse_model *m)
 {
 	int tmp;
 
 	tmp = 0;
-	while(1)
+	while (1)
 	{
-		while(*line == ' ')
+		while (*line == ' ')
 			line++;
-		if(!*line)
+		if (!*line)
 			break ;
-		if(!parse_vertex(&line, m))
-			return 0;
+		if (!parse_vertex(&line, m))
+			return (0);
 		++tmp;
-		if(!*line)
+		if (!*line)
 			break ;
 	}
 	m->w = m->w ? m->w : tmp;
-	if(!(tmp == m->w))
-		return 0;
-	return tmp == m->w;
+	if (!(tmp == m->w))
+		return (0);
+	return (tmp == m->w);
 }
 
-#include <stdio.h>
-t_sparse_model *parse_file(char **file)
+t_sparse_model	*parse_file(char **file)
 {
 	t_sparse_model *m;
 
 	m = ft_memset(malloc(sizeof(*m)), 0, sizeof(*m));
 	while (*file)
 	{
-		if(!parse_line(*file++, m))
-			return 0;
+		if (!parse_line(*file++, m))
+			return (0);
 		m->h++;
-		if(!*file || ft_strcmp(*file++, "\n") != 0)
-			return 0;
-		if(!*file)
+		if (!*file || ft_strcmp(*file++, "\n") != 0)
+			return (0);
+		if (!*file)
 			break ;
 	}
 	if (m)
-		return m->w * m->h > 1 ? m : 0;
-	return 0;
+		return (m->w * m->h > 1 ? m : 0);
+	return (0);
 }
