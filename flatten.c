@@ -62,7 +62,7 @@ void free_verts(void *d, size_t s)
 	(void)s;
 	free(d);
 }
-
+#include <stdio.h>
 t_model *flatten_model(t_sparse_model *sm)
 {
 	t_model *ret;
@@ -73,7 +73,7 @@ t_model *flatten_model(t_sparse_model *sm)
 	ret->verts = malloc(sizeof(t_vertex) * sm->h * sm->w);
 	vertptr = ret->verts;
 	ft_lstiterup(sm->verts, &fill_vert_array, (void*)&vertptr);
-	ret->elements = malloc(sizeof(int) * ((4 * sm->w * sm->h) - sm->w - sm->h));
+	ret->elements = malloc(sizeof(int) * 2 * ((2 * sm->w * sm->h) - sm->w - sm->h));
 	ret->e_sz = fillelem(ret->verts, ret->elements, sm);
 	ret->w = sm->w;
 	ret->h = sm->h;
@@ -83,6 +83,7 @@ t_model *flatten_model(t_sparse_model *sm)
 	ret->model = translation(vec3_zero());
 	free(pos);
 	ft_lstdel(&sm->verts, &free_verts);
+	printf("%d, %d\n", sm->w, sm->h);
 	free(sm);
 	return ret;
 }

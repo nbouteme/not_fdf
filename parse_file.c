@@ -75,6 +75,8 @@ int parse_line(char *line, t_sparse_model *m)
 	{
 		while(*line == ' ')
 			line++;
+		if(!*line)
+			break ;
 		if(!parse_vertex(&line, m))
 			return 0;
 		++tmp;
@@ -87,6 +89,7 @@ int parse_line(char *line, t_sparse_model *m)
 	return tmp == m->w;
 }
 
+#include <stdio.h>
 t_sparse_model *parse_file(char **file)
 {
 	t_sparse_model *m;
