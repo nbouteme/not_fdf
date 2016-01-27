@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 16:42:29 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:48:40 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/01/27 17:10:24 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,18 @@ int				parse_height(char **file, t_vertex *v)
 int				parse_color(char **file, t_vertex *v)
 {
 	const char	*b = "0123456789ABCDEF";
-	int			i;
+	char		*s;
 
 	(*file)++;
 	*file += **file == '0';
 	*file += **file == 'x';
+	s = *file;
 	while (ft_strindexof(b, *s) != -1)
 	{
 		v->color += ft_strindexof(b, *s++);
 		if (ft_strindexof(b, *s) == -1)
 			break ;
-		v->color *= base;
+		v->color <<= 4;
 	}
 	while (ft_isdigit(*file[0]) || ('A' <= *file[0] && *file[0] <= 'Z'))
 		file[0]++;
