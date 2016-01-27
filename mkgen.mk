@@ -38,13 +38,13 @@ $(eval LIBDIRS += $(addprefix -L,$(LDEP)))
 $(eval LIBS += $(DEP))
 all: 
 	$(foreach dep,$(PDEP), $(if $(shell make -C $(dep) &> /dev/null), $(eval )))
-	@$(MAKE) -s $(NAME)
+	$(MAKE) -s $(NAME)
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCDIRS) -c $^
 	@$(ECHO) "\033[0;32m[✓] Built C object" $@
 $(NAME): $(OBJ)
 	@$(ECHO) "\033[0;34m--------------------------------"
-	@$(CC) -o $(NAME) $(CFLAGS) $(OBJ) $(LIBDIRS) $(addprefix -l,$(LIBS)) $(INCDIRS)
+	@$(CC) -o $(NAME) $(CFLAGS) $(OBJ) $(LIBDIRS) $(addprefix -l,$(LIBS)) $(INCDIRS) $(SUPF)
 	@$(ECHO) "\033[0;31m[✓] Linked C executable" $(NAME)
 clean:
 	@/bin/rm -rf $(OBJ)
