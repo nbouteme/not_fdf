@@ -11,8 +11,18 @@
 #******************************************************************************#
 
 NAME = fdf
-#OPTS = -O3 -march=native -mtune=native
-OPTS = -g
+OPTS =	-O3 -march=native -mtune=native -ffinite-math-only \
+	-funsafe-math-optimizations -fno-math-errno -ffast-math \
+	-lm -Lminilibx -lmlx
+UNAME := $(shell uname)
+#$(shell make -s -C minilibx)
+ifeq ($(UNAME), Linux)
+OPTS += -lX11 -lXext
+else
+OPTS += -framework OpenGL -framework AppKit
+endif
+
+#OPTS = -g
 
 ##################
 include mkgen.mk #

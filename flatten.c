@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <libft/math.h>
+#include "math.h"
 #include "parser.h"
 
 size_t	fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
@@ -74,6 +74,8 @@ void	free_verts(void *d, size_t s)
 	free(d);
 }
 
+#include <stdio.h>
+
 t_model	*flatten_model(t_sparse_model *sm)
 {
 	t_model		*ret;
@@ -93,6 +95,7 @@ t_model	*flatten_model(t_sparse_model *sm)
 	(*pos)[1] = -ret->h / 2;
 	ret->model = translation(vec3_zero());
 	free(pos);
+	printf("%d, %d\n", sm->w, sm->h);
 	ftext_lstdel(&sm->verts, &free_verts);
 	free(sm);
 	return (ret);

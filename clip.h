@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   clip.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/27 16:59:42 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:59:59 by nbouteme         ###   ########.fr       */
+/*   Created: 2016/01/13 18:49:19 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/01/13 18:49:49 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef CLIP_H
+# define CLIP_H
 
-# include "math.h"
-# include "mlx.h"
+# include "gfx.h"
 
-t_sparse_model	*parse_file(char **file);
-t_model			*flatten_model(t_sparse_model *sm);
+enum	e_rel
+{
+	IN = 0x00000000,
+	LEFT = 0x00000001,
+	RIGHT = 0x00000100,
+	TOP = 0x00010000,
+	BOT = 0x01000000
+};
+
+int clip(t_graphics *g, t_point *a, t_point *b);
 
 #endif

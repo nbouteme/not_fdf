@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   key_handle.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/27 16:59:42 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:59:59 by nbouteme         ###   ########.fr       */
+/*   Created: 2016/01/13 18:41:44 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/01/27 16:53:18 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef KEY_HANDLE_H
+# define KEY_HANDLE_H
 
-# include "math.h"
-# include "mlx.h"
-
-t_sparse_model	*parse_file(char **file);
-t_model			*flatten_model(t_sparse_model *sm);
+int	set_key_handlers(t_display *d);
+int	is_key_pressed(int key);
 
 #endif

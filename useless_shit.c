@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   useless_shit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/27 16:59:42 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:59:59 by nbouteme         ###   ########.fr       */
+/*   Created: 2016/01/13 18:51:15 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/01/13 18:54:55 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include <stdlib.h>
+#include <libft/std.h>
+#include "mlx.h"
+#include "gfx.h"
 
-# include "math.h"
-# include "mlx.h"
+void	present(t_graphics *g)
+{
+	mlx_put_image_to_window(g->d->conn, g->d->win, g->int_img, 0, 0);
+}
 
-t_sparse_model	*parse_file(char **file);
-t_model			*flatten_model(t_sparse_model *sm);
-
-#endif
+void	clear_graphics(t_graphics *g)
+{
+	ft_memset(g->fb, 0, 4 * g->dim.w * g->dim.h);
+}

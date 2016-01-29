@@ -16,7 +16,7 @@
 #include <fcntl.h>
 
 #include <libft/std.h>
-#include <libft/mlx.h>
+#include "mlx.h"
 
 #define B_SIZE (1 << 16)
 
