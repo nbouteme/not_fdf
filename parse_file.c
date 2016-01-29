@@ -61,16 +61,12 @@ int				parse_color(char **file, t_vertex *v)
 int				parse_vertex(char **file, t_sparse_model *m)
 {
 	t_vertex	v;
-	t_list		*a;
 
 	if (!parse_height(file, &v))
 		return (0);
 	if (*file[0] == ',' && !parse_color(file, &v))
 		return (0);
-	a = ft_lstnew(&v, sizeof(v));
-	ft_lstpush(&m->verts, a);
-	free(a->content);
-	free(a);
+	ftext_lstpush_back(m->verts, ftext_lstnewelem(&v, sizeof(v)));
 	return (1);
 }
 
@@ -101,7 +97,8 @@ t_sparse_model	*parse_file(char **file)
 {
 	t_sparse_model *m;
 
-	m = ft_memset(malloc(sizeof(*m)), 0, sizeof(*m));
+	m = ft_memalloc(sizeof(*m));
+	m->verts = ftext_lstnew();
 	while (*file)
 	{
 		if (!parse_line(*file++, m))

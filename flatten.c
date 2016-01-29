@@ -43,7 +43,7 @@ size_t	fillelem(t_vertex *vertptr, int *elemptr, t_sparse_model *sm)
 	return (elemptr - e);
 }
 
-void	fill_vert_array(t_list *elem, void *up)
+void	fill_vert_array(t_dlist *elem, void *up)
 {
 	t_vertex **verts;
 
@@ -83,7 +83,7 @@ t_model	*flatten_model(t_sparse_model *sm)
 	ret = malloc(sizeof(*ret));
 	ret->verts = malloc(sizeof(t_vertex) * sm->h * sm->w);
 	vertptr = ret->verts;
-	ft_lstiterup(sm->verts, &fill_vert_array, (void*)&vertptr);
+	ftext_lstiterup(sm->verts, &fill_vert_array, (void*)&vertptr);
 	ret->elements = malloc(8 * ((2 * sm->w * sm->h) - sm->w - sm->h));
 	ret->e_sz = fillelem(ret->verts, ret->elements, sm);
 	ret->w = sm->w;
@@ -93,7 +93,7 @@ t_model	*flatten_model(t_sparse_model *sm)
 	(*pos)[1] = -ret->h / 2;
 	ret->model = translation(vec3_zero());
 	free(pos);
-	ft_lstdel(&sm->verts, &free_verts);
+	ftext_lstdel(&sm->verts, &free_verts);
 	free(sm);
 	return (ret);
 }
