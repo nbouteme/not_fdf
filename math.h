@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:45:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 18:46:00 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 02:45:34 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ t_cvec3	vec3_zero();
 float	vec3_norme(t_cvec3 rhs);
 t_mat4	new_mat4_from_a4(const float x[4], const float y[4],
 						const float z[4], const float w[4]);
+t_vec4	project(t_mat4 mvp, t_vec4 n);
 
 #endif

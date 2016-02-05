@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 16:37:11 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:40:27 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 02:32:13 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	free_verts(void *d, size_t s)
 	free(d);
 }
 
-#include <stdio.h>
-
 t_model	*flatten_model(t_sparse_model *sm)
 {
 	t_model		*ret;
@@ -95,7 +93,6 @@ t_model	*flatten_model(t_sparse_model *sm)
 	(*pos)[1] = -ret->h / 2;
 	ret->model = translation(vec3_zero());
 	free(pos);
-	printf("%d, %d\n", sm->w, sm->h);
 	ftext_lstdel(&sm->verts, &free_verts);
 	free(sm);
 	return (ret);

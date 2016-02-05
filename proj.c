@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:02:05 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 19:05:05 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 02:45:07 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,13 @@ t_mat4	mat4_pers(float fov, float ar, float near, float far)
 							(float[4]){ 0, 0, -(near + far) / dist, -1 },
 							(float[4]){ 0, 0, -(2 * near * far) / dist, 0 });
 	return (mper);
+}
+
+t_vec4		project(t_mat4 mvp, t_vec4 n)
+{
+	t_vec4 ret;
+
+	ret = mat4_m_vec4(mvp, n);
+	vec4_sdiv(ret, (*ret)[3]);
+	return (ret);
 }

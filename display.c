@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:17:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:50:56 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 02:47:10 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 #include "gfx.h"
 #include "mlx.h"
 #include "key_defs.h"
-
-t_vec4		project(t_mat4 mvp, t_vec4 n)
-{
-	t_vec4 ret;
-
-	ret = mat4_m_vec4(mvp, n);
-	vec4_sdiv(ret, (*ret)[3]);
-	return (ret);
-}
 
 t_vec4		to_screen_space(t_point dim, t_vec4 n)
 {
@@ -59,7 +50,7 @@ static void	render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 	}
 }
 
-int			disp_expose(t_display *d)
+static void	redraw(t_display *d)
 {
 	t_mat4		tmp;
 	t_mat4		mvp;
@@ -78,6 +69,10 @@ int			disp_expose(t_display *d)
 	render_line(d, mvp, d->model->verts);
 	free(tmp);
 	free(mvp);
+}
+
+int			disp_expose(t_display *d)
+{
 	present(d->g);
 	mlx_do_sync(d->conn);
 	return (0);
@@ -103,6 +98,7 @@ int			disp_handle_key(t_display *d)
 	if (is_key_pressed(KP_SUBTRACT))
 		++(*d->position)[2];
 	clear_graphics(d->g);
-	disp_expose(d);
+	//disp_expose(d);
+	redraw(d);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 16:52:16 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:57:20 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 02:41:15 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,13 @@
 
 #include "mlx.h"
 
-static int g_key_states[0x10000];
+
+static int *get_key_states(void)
+{
+	static int totally_not_global[0x10000];
+
+	return (totally_not_global);
+}
 
 void		set_key_handlers(t_display *d)
 {
@@ -37,17 +43,17 @@ void		set_key_handlers(t_display *d)
 
 int			disp_key_released(int key)
 {
-	g_key_states[key] = 0;
+	get_key_states()[key] = 0;
 	return (0);
 }
 
 int			disp_key_pressed(int key)
 {
-	g_key_states[key] = 1;
+	get_key_states()[key] = 1;
 	return (0);
 }
 
 int			is_key_pressed(int key)
 {
-	return (g_key_states[key]);
+	return (get_key_states()[key]);
 }
