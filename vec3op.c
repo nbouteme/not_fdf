@@ -47,14 +47,14 @@ t_vec3	vec3_sub(t_cvec3 a, t_cvec3 b)
 
 t_cvec3	vec3_up(void)
 {
-	const static float ret[3] = {0, 0, -1};
+	static const float ret[3] = {0, 0, -1};
 
 	return (&ret);
 }
 
 t_cvec3	vec3_zero(void)
 {
-	const static float ret[3] = {0, 0, 0};
+	static const float ret[3] = {0, 0, 0};
 
 	return (&ret);
 }
