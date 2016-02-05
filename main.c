@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 16:42:11 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:42:13 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 03:11:44 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,16 @@
 
 int		check_input(char *s)
 {
-	const char *auth = " \n0123456789-,xABCDEF";
+	const char *auth = " \n0123456789-,xABCDEFabcdef";
 
 	while (*s)
 		if (ft_strindexof(auth, *s) == -1)
+		{
+			ft_putstr("Illegal char in file: ");
+			ft_putchar(*s);
+			ft_putchar(10);
 			return (0);
+		}
 		else
 			++s;
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:28:59 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:51:53 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 02:47:56 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int			disp_loop(t_display *d)
 int			event_loop(t_display *d)
 {
 	disp_handle_key(d);
+	present(d->g);
+	mlx_do_sync(d->conn);
 	return (0);
 }
 

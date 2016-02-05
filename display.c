@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:17:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/05 02:47:10 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 06:56:20 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,49 @@ t_vec4		to_screen_space(t_point dim, t_vec4 n)
 	return (n);
 }
 
+static void clip_3d(t_vec4 v1, t_vec4 v2)
+{
+	//float	n;
+/*
+	n = ((*v1)[3] - 0.01f) / ((*v1)[3] - (*v2)[3]);
+	(*v2)[0] = (n * (*v1)[0]) + ((1.0f - n) * (*v2)[0]);
+	(*v2)[1] = (n * (*v1)[1]) + ((1.0f - n) * (*v2)[1]);
+	(*v2)[2] = (n * (*v1)[2]) + ((1.0f - n) * (*v2)[2]);
+	//(*v2)[3] = (n * (*v1)[3]) + ((1.0f - n) * (*v2)[3]);
+	(*v2)[3] = 0.1f;*/
+
+	t_vec3 tmp = vec3_sub((t_vec3)v1, (t_vec3)v2);
+	(*tmp)[0] /= 0.1;
+	(*tmp)[1] /= 0.1;
+	(*tmp)[2] /= 0.1;
+	ft_memcpy(v2, v1, sizeof(*v1));
+	(*v2)[0] *= (*tmp)[0];
+	(*v2)[1] *= (*tmp)[1];
+	(*v2)[2] *= (*tmp)[2];
+	free(tmp);
+}
+
+static int clip_plane(t_display *d, t_mat4 mvp, t_vec4 *rarb)
+{
+	t_vec4	a;
+	t_vec4	b;
+
+	a = mat4_m_vec4(mvp, rarb[0]);
+	b = mat4_m_vec4(mvp, rarb[1]);
+	rarb[2] = a;
+	rarb[3] = b;
+	if (((*a)[3] < 0.1f) && ((*b)[3] < 0.1f))
+		return (0);
+	if (((*a)[3] >= 0.1f) && ((*b)[3] < 0.1f))
+		clip_3d(a, b);
+	else if (((*a)[3] < 0.1f) && ((*b)[3] >= 0.1f))
+		clip_3d(b, a);
+	rarb[2] = to_screen_space(d->dim, vec4_sdiv(a, (*a)[3]));
+	rarb[3] = to_screen_space(d->dim, vec4_sdiv(b, (*b)[3]));
+	//(void)d;
+	return (1);
+}
+
 static void	render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 {
 	t_vertex	a;
@@ -39,10 +82,9 @@ static void	render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 		b = ptr[d->model->elements[i++]];
 		papbrarb[0] = &(float[]){a.x, a.y, a.z, 1};
 		papbrarb[1] = &(float[]){b.x, b.y, b.z, 1};
-		papbrarb[2] = to_screen_space(d->dim, project(mvp, papbrarb[0]));
-		papbrarb[3] = to_screen_space(d->dim, project(mvp, papbrarb[1]));
-		if (0 < (*papbrarb[2])[2] && (*papbrarb[2])[2] < 1 &&
-			0 < (*papbrarb[3])[2] && (*papbrarb[3])[2] < 1)
+		if(a.z == 50)
+			putchar(0);
+		if (clip_plane(d, mvp, papbrarb))
 			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1]},
 					(t_point){(*papbrarb[3])[0], (*papbrarb[3])[1]});
 		free(papbrarb[2]);

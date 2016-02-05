@@ -11,8 +11,8 @@
 #******************************************************************************#
 
 NAME = fdf
-OPTS = -flto -O3 -march=native -mtune=native -ffinite-math-only -funsafe-math-optimizations -fno-math-errno -ffast-math
-#OPTS = -g
+#OPTS = -flto -O3 -march=native -mtune=native -ffinite-math-only -funsafe-math-optimizations -fno-math-errno -ffast-math
+OPTS = -g
 SUPL = -lm -Lminilibx -lmlx
 
 UNAME := $(shell uname)

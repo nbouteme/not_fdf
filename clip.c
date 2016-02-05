@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:47:34 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 18:49:10 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/05 03:13:29 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ int			clip(t_graphics *g, t_point *a, t_point *b)
 		else
 			rb = gen_rel(g, b);
 	}
-	return (ret);
+	return (0);
 }
