@@ -13,32 +13,40 @@
 #include "gfx.h"
 #include "clip.h"
 
-static int	gen_rel(const t_graphics *g, const t_point *a)
+static int	gen_rel(const t_point *a)
 {
 	int ret;
 
 	ret = 0;
 	ret = a->w < 0 ? ret | LEFT : ret;
 	ret = a->h < 0 ? ret | BOT : ret;
-	ret = a->w > g->dim.w ? ret | RIGHT : ret;
-	ret = a->h > g->dim.h ? ret | TOP : ret;
+	ret = a->w > 420 ? ret | RIGHT : ret;
+	ret = a->h > 420 ? ret | TOP : ret;
 	return (ret);
 }
 
-static void	apply_clip(t_graphics *g, t_point *t[3], int rtmp)
+void	apply_clip(t_clip t, int rtmp)
 {
 	if (rtmp & TOP)
-		*t[0] = (t_point){ t[1]->w + (t[2]->w - t[1]->w) * (g->dim.h - t[1]->h)
-						/ (t[2]->h - t[1]->h), g->dim.h };
+	{
+		t.out->w = t.a[0] + (t.b[0] - t.a[0]) * (420.0f - t.a[1]) / (t.b[1] - t.a[1]);
+		t.out->h = 420.0f;
+	}
 	else if (rtmp & BOT)
-		*t[0] = (t_point){ t[1]->w + (t[2]->w - t[1]->w) * -t[1]->h
-						/ (t[2]->h - t[1]->h), 0 };
+	{
+		t.out->w = t.a[0] + (t.b[0] - t.a[0]) * -t.a[1] / (t.b[1] - t.a[1]);
+		t.out->h = 0;
+	}
 	else if (rtmp & RIGHT)
-		*t[0] = (t_point){ g->dim.w, t[1]->h + (t[2]->h - t[1]->h) *
-						(g->dim.w - t[1]->w) / (t[2]->w - t[1]->w)};
+	{
+		t.out->w = 420.0f;
+		t.out->h = t.a[1] + (t.b[1] - t.a[1]) * (420.0f - t.a[0]) / (t.b[0] - t.a[0]);
+	}
 	else if (rtmp & LEFT)
-		*t[0] = (t_point){ 0, t[1]->h + (t[2]->h - t[1]->h) *
-						-t[1]->w / (t[2]->w - t[1]->w)};
+	{
+		t.out->w = 0.0f;
+		t.out->h = t.a[1] + (t.b[1] - t.a[1]) * -t.a[0] / (t.b[0] - t.a[0]);
+	}
 }
 
 int			clip(t_graphics *g, t_point *a, t_point *b)
@@ -46,22 +54,24 @@ int			clip(t_graphics *g, t_point *a, t_point *b)
 	int		ra;
 	int		rb;
 	int		rtmp;
-	t_point	*t;
 	int		ret;
+	float *vals[2];
 
-	ra = gen_rel(g, a);
-	rb = gen_rel(g, b);
+	(void)g;
+	vals[0] = (float[]){a->w, a->h};
+	vals[1] = (float[]){b->w, b->h};
+	ra = gen_rel(a);
+	rb = gen_rel(b);
 	while (1)
 	{
 		if ((ret = !(ra | rb)) || (ra & rb))
 			return (ret);
-		t = ra ? a : b;
 		rtmp = ra ? ra : rb;
-		apply_clip(g, (t_point*[3]){t, a, b}, rtmp);
+		apply_clip((t_clip){ra ? a : b, vals[0], vals[1]}, rtmp);
 		if (rtmp == ra)
-			ra = gen_rel(g, a);
+			ra = gen_rel(a);
 		else
-			rb = gen_rel(g, b);
+			rb = gen_rel(b);
 	}
 	return (0);
 }
