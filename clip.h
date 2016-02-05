@@ -24,6 +24,13 @@ enum	e_rel
 	BOT = 0x01000000
 };
 
+typedef struct	s_clip
+{
+	t_point	*out;
+	float	*a;
+	float	*b;
+}				t_clip;
+
 int clip(t_graphics *g, t_point *a, t_point *b);
 
 #endif
