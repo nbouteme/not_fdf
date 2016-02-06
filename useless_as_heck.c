@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:28:59 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/05 02:47:56 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 05:44:21 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,21 @@ t_display	*new_display(t_model *m)
 {
 	t_display *ret;
 
-	ret = malloc(sizeof(*ret));
+	ret = ft_memalloc(sizeof(*ret));
 	ret->conn = mlx_init();
-	ret->dim.w = 420;
-	ret->dim.h = 420;
+	ret->dim = (t_point) {420, 420, 0};
 	ret->win = mlx_new_window(ret->conn, ret->dim.w, ret->dim.h, "FdF");
 	ret->g = new_graphics(ret);
 	ret->model = m;
 	ret->position = ft_memalloc(sizeof(*ret->position));
-	ret->camera = 0;
-	ret->proj = 0;
 	(*ret->position)[0] = 5.75;
 	(*ret->position)[1] = 5.75;
 	(*ret->position)[2] = 25.75;
+	ret->center = vec3_copy(vec3_zero());
+	(*ret->center)[0] = m->w / 2;
+	(*ret->center)[1] = m->h / 2;
+	ret->camera = ft_memalloc(sizeof(*ret->camera));
+	ret->proj = mat4_pers(M_PI_4, 1.0f, 0.1f, 1000);
 	set_key_handlers(ret);
 	mlx_loop_hook(ret->conn, &event_loop, ret);
 	mlx_expose_hook(ret->win, &disp_expose, ret);

@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:05:25 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 19:07:34 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 05:49:06 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ float	vec3_norme(t_cvec3 rhs)
 				((*rhs)[2] * (*rhs)[2])));
 }
 
-t_vec3	vec3_normalize(t_cvec3 rhs)
+t_vec3	vec3_normalize(t_vec3 ret)
 {
 	float	norme;
-	t_vec3	ret;
 
-	ret = vec3_copy(rhs);
-	norme = vec3_norme(rhs);
+	norme = vec3_norme(ret);
 	(*ret)[0] /= norme;
 	(*ret)[1] /= norme;
 	(*ret)[2] /= norme;

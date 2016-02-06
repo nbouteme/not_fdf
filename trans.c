@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 01:34:37 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 05:14:53 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:14:15 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ static void	clip_3d(t_vec4 v1, t_vec4 v2)
 	(*v2)[3] = 0.1f;
 }
 
-static int	clip_plane(t_display *d, t_mat4 mvp, t_vec4 *rarb)
+static int	clip_plane(t_display *d, t_vec4 *rarb)
 {
 	t_vec4	a;
 	t_vec4	b;
 
-	a = mat4_m_vec4(mvp, rarb[0]);
-	b = mat4_m_vec4(mvp, rarb[1]);
-	rarb[2] = a;
-	rarb[3] = b;
+	a = rarb[2];
+	b = rarb[3];
 	if (((*a)[3] <= 0.1f) && ((*b)[3] <= 0.1f))
 		return (0);
 	if (((*a)[3] >= 0.1f) && ((*b)[3] < 0.1f))
@@ -54,6 +52,8 @@ void		render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 
 	i = 0;
 	p = draw_para_ctl();
+	papbrarb[2] = &(float[]){0, 0, 0, 0};
+	papbrarb[3] = &(float[]){0, 0, 0, 0};
 	while (i < (2 * (2 * (d->model->h) * (d->model->w)
 					- d->model->w - d->model->h)))
 	{
@@ -61,16 +61,14 @@ void		render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 		b = ptr[d->model->elements[i++]];
 		papbrarb[0] = &(float[]){a.x, a.y, a.z, 1};
 		papbrarb[1] = &(float[]){b.x, b.y, b.z, 1};
+		ft_memcpy(papbrarb[2], mat4_m_vec4(mvp, papbrarb[0]), 16);
+		ft_memcpy(papbrarb[3], mat4_m_vec4(mvp, papbrarb[1]), 16);
 		p->c1 = a.color;
 		p->c2 = b.color;
-		if(a.color != b.color)
-			ft_putchar(0);
-		if (clip_plane(d, mvp, papbrarb))
+		if (clip_plane(d, papbrarb))
 			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1],
 						(*papbrarb[2])[2]},
 					(t_point){(*papbrarb[3])[0], (*papbrarb[3])[1],
 							(*papbrarb[3])[2]});
-		free(papbrarb[2]);
-		free(papbrarb[3]);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:45:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/05 02:45:34 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 05:52:48 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ t_mat3	new_mat3_from_data(const float *data);
 t_mat3	mat3_mult(t_mat3 a, t_mat3 b);
 t_mat3	mat3_add(t_mat3 a, t_mat3 b);
 t_vec3	vec3_copy(t_cvec3 rhs);
-t_vec3	vec3_normalize(t_cvec3 rhs);
-t_vec3	vec3_cross(t_cvec3 a, t_cvec3 b);
+t_vec3	vec3_normalize(t_vec3 ret);
+t_vec3	vec3_cross(t_vec3 ret, t_cvec3 a, t_cvec3 b);
 t_vec3	vec3_add(t_cvec3 a, t_cvec3 b);
-t_vec3	vec3_sub(t_cvec3 a, t_cvec3 b);
+t_vec3	vec3_sub(t_vec3 ret, t_cvec3 a, t_cvec3 b);
 t_vec4	vec4_from_a4(const float v[4]);
 t_vec4	vec4_sdiv(t_vec4 a, float w);
 t_vec4	vec4_smul(t_vec4 a, float n);

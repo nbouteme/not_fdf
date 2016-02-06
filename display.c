@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:17:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 02:55:02 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:03:26 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,14 @@ t_vec4		to_screen_space(t_point dim, t_vec4 n)
 
 void		redraw(t_display *d)
 {
-	t_mat4		tmp;
-	t_mat4		mvp;
-	t_vec3		tmp3;
+	float		tmp[4][4];
+	float		mvp[4][4];
 
-	free(d->camera);
-	tmp3 = vec3_copy(vec3_zero());
-	(*tmp3)[0] = d->model->w / 2;
-	(*tmp3)[1] = d->model->h / 2;
-	d->camera = mat4_lookat(d->position, tmp3, vec3_up());
-	free(tmp3);
-	free(d->proj);
-	d->proj = mat4_pers(M_PI_4, (float)d->dim.w / d->dim.h, 0.1f, 10000);
-	tmp = mat4_mult(d->camera, d->model->model);
-	mvp = mat4_mult(tmp, d->proj);
-	render_line(d, mvp, d->model->verts);
-	free(tmp);
-	free(mvp);
+	ft_memcpy(d->camera, mat4_lookat(d->position, d->center, vec3_up()),
+			  sizeof(*d->camera));
+	ft_memcpy(tmp, mat4_mult(d->camera, d->model->model), sizeof(tmp));
+	ft_memcpy(mvp, mat4_mult(&tmp, d->proj), sizeof(mvp));
+	render_line(d, &mvp, d->model->verts);
 }
 
 int			disp_expose(t_display *d)

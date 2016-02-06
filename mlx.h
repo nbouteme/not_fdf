@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:41:44 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 16:58:08 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 05:38:42 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_display
 	t_model		*model;
 	t_graphics	*g;
 	t_vec3		position;
+	t_vec3		center;
 	t_mat4		camera;
 	t_mat4		proj;
 }				t_display;
