@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:11 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:11:40 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:27:19 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_graphics	*new_graphics(t_display *d)
 {
 	int			osef;
 	t_graphics	*g;
-	int i;
-	int max;
+	int			i;
+	int			max;
 
 	g = malloc(sizeof(t_graphics));
 	g->d = d;
@@ -32,7 +32,7 @@ t_graphics	*new_graphics(t_display *d)
 	ft_memset(g->fb, 0, max);
 	g->z = malloc(4 * max);
 	while (i < max)
-	g->z[i++] = 0x3F800000;
+		g->z[i++] = 0x3F800000;
 	g->color = 0x00FFFFFF;
 	return (g);
 }
@@ -62,7 +62,7 @@ void		draw_line_bare(t_graphics *g, t_point a, t_point b)
 	}
 }
 
-t_point		ndc_to_screen(t_graphics *g, t_point ndc)
+t_point		ndc_to_screen(t_graphics *g, t_point n)
 {
 	int ppn;
 	int xoff;
@@ -80,7 +80,7 @@ t_point		ndc_to_screen(t_graphics *g, t_point ndc)
 		xoff = 0;
 		yoff = (g->dim.h - g->dim.w) >> 1;
 	}
-	return (t_point){ndc.w * ppn + xoff, g->dim.w - (ndc.h * ppn) + yoff, ndc.z};
+	return (t_point){n.w * ppn + xoff, g->dim.w - (n.h * ppn) + yoff, n.z};
 }
 
 void		draw_nline(t_graphics *g, t_vec4 n1, t_vec4 n2)

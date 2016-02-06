@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 01:34:37 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:00:15 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:26:11 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 	t_drawpara	*p;
 
 	i = 0;
-	p = &g_d;
+	p = draw_para_ctl();
 	while (i < (2 * (2 * (d->model->h) * (d->model->w)
 					- d->model->w - d->model->h)))
 	{
@@ -64,8 +64,10 @@ void		render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 		p->c1 = a.color;
 		p->c2 = b.color;
 		if (clip_plane(d, mvp, papbrarb))
-			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1], (*papbrarb[2])[2]},
-					(t_point){(*papbrarb[3])[0], (*papbrarb[3])[1], (*papbrarb[3])[2]});
+			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1],
+						(*papbrarb[2])[2]},
+					(t_point){(*papbrarb[3])[0], (*papbrarb[3])[1],
+							(*papbrarb[3])[2]});
 		free(papbrarb[2]);
 		free(papbrarb[3]);
 	}

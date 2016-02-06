@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:36 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:12:25 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:28:53 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,14 @@ int			is_outside(t_graphics *g, t_point a)
 	return (0);
 }
 
-unsigned	get_pixel(t_graphics *g, t_point pos)
+t_drawpara	*draw_para_ctl(void)
 {
-	if (is_outside(g, pos))
-		return (0);
-	return (g->fb[pos.h * g->dim.w + pos.w]);
+	static t_drawpara d;
+
+	return (&d);
 }
 
-void		draw_point_bare(t_graphics *g, t_point pos)
-{
-	g->fb[pos.h * g->dim.w + pos.w] = g->color;
-}
-
-t_drawpara g_d;
-
-//t_drawpara	*draw_para_ctl()
-//{
-
-//	return (&d);
-//}
-
-int mix(int c1, int c2, float t)
+int			mix(int c1, int c2, float t)
 {
 	int ret;
 	int r;
@@ -72,14 +59,14 @@ void		draw_point(t_graphics *g, t_point pos)
 	if (pos.z >= g->z[pos.h * g->dim.w + pos.w])
 		return ;
 	g->z[pos.h * g->dim.w + pos.w] = pos.z;
-	d = &g_d;
+	d = draw_para_ctl();
 	pro = (float)(pos.w - d->x1) / ABS(d->dist);
 	g->color = mix(d->c1, d->c2, d->dist > 0 ? pro : 1.0f - pro);
-	if(!g->color)
+	if (!g->color)
 		g->color = 0x00FFFFFF;
 	if (is_outside(g, pos))
 		return ;
-	draw_point_bare(g, pos);
+	g->fb[pos.h * g->dim.w + pos.w] = g->color;
 }
 
 void		draw_line(t_graphics *g, t_point a, t_point b)
@@ -90,7 +77,7 @@ void		draw_line(t_graphics *g, t_point a, t_point b)
 
 	if (!clip(g, &a, &b))
 		return ;
-	p = &g_d;
+	p = draw_para_ctl();
 	p->x1 = a.w < b.w ? a.w : b.w;
 	as = ABS(a.w - b.w);
 	as *= as;

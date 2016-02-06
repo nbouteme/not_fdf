@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:36:55 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 03:57:15 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:22:33 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,5 @@ void						draw_line_bare(t_graphics *g, t_point a, t_point b);
 void						render_line(t_display *d, t_mat4 mvp,
 										t_vertex *ptr);
 t_vec4						to_screen_space(t_point dim, t_vec4 n);
-//t_drawpara					*draw_para_ctl();
-extern t_drawpara g_d;
+t_drawpara					*draw_para_ctl();
 #endif
