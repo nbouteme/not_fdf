@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:36:55 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:22:33 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 05:26:39 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,9 @@
 # include "math.h"
 
 # define SIGN(x) ((x > 0) ? 1 : ((x < 0)? -1 : 0))
-# define ABS(x) ((x < 0)? -(x) : (x))
+# define ABS(x) ((x < 0) ? -(x) : (x))
 
 typedef struct s_display	t_display;
-
-typedef struct				s_drawpara
-{
-	int x1;
-	int c1;
-	int c2;
-	int dist;
-}							t_drawpara;
 
 typedef struct				s_point
 {
@@ -35,6 +27,15 @@ typedef struct				s_point
 	int						h;
 	float					z;
 }							t_point;
+
+typedef struct				s_drawpara
+{
+	t_point a;
+	t_point b;
+	float	dist;
+	int		c1;
+	int		c2;
+}							t_drawpara;
 
 typedef struct				s_graphics
 {

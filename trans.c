@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 01:34:37 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:26:11 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 05:14:53 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void		render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 		papbrarb[1] = &(float[]){b.x, b.y, b.z, 1};
 		p->c1 = a.color;
 		p->c2 = b.color;
+		if(a.color != b.color)
+			ft_putchar(0);
 		if (clip_plane(d, mvp, papbrarb))
 			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1],
 						(*papbrarb[2])[2]},
