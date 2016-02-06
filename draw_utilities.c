@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:36 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 02:39:51 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:07:41 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,16 @@ int mix(int c1, int c2, float t)
 
 void		draw_point(t_graphics *g, t_point pos)
 {
-	t_drawpara *d;
+	t_drawpara	*d;
+	float		pro;
 
+	if (pos.z >= g->z[pos.h * g->dim.w + pos.w])
+	return ;
 	d = &g_d;
-	float pro = (float)(pos.w - d->x1) / ABS(d->dist);
+	pro = (float)(pos.w - d->x1) / ABS(d->dist);
 	g->color = mix(d->c1, d->c2, d->dist > 0 ? pro : 1.0f - pro);
+	if(!g->color)
+		g->color = 0x00FFFFFF;
 	if (is_outside(g, pos))
 		return ;
 	draw_point_bare(g, pos);
@@ -79,12 +84,17 @@ void		draw_point(t_graphics *g, t_point pos)
 void		draw_line(t_graphics *g, t_point a, t_point b)
 {
 	t_drawpara	*p;
+	int			as;
+	int			bs;
 
-	if (clip(g, &a, &b))
-	{
-		p = &g_d;
-		p->x1 = a.w < b.w ? a.w : b.w;
-		p->dist = a.w - b.w;
-		draw_line_bare(g, a, b);
-	}
+	if (!clip(g, &a, &b))
+		return ;
+	p = &g_d;
+	p->x1 = a.w < b.w ? a.w : b.w;
+	as = ABS(a.w - b.w);
+	as *= as;
+	bs = ABS(a.h - b.h);
+	bs *= bs;
+	p->dist = sqrt(as + bs);
+	draw_line_bare(g, a, b);
 }

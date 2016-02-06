@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:17:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 02:13:03 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 02:55:02 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		redraw(t_display *d)
 	d->camera = mat4_lookat(d->position, tmp3, vec3_up());
 	free(tmp3);
 	free(d->proj);
-	d->proj = mat4_pers(M_PI_4, (float)d->dim.w / d->dim.h, 0.1f, 1000);
+	d->proj = mat4_pers(M_PI_4, (float)d->dim.w / d->dim.h, 0.1f, 10000);
 	tmp = mat4_mult(d->camera, d->model->model);
 	mvp = mat4_mult(tmp, d->proj);
 	render_line(d, mvp, d->model->verts);

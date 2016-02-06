@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:11 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 18:53:27 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:07:23 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,20 @@ t_graphics	*new_graphics(t_display *d)
 {
 	int			osef;
 	t_graphics	*g;
+	int i;
+	int max;
 
 	g = malloc(sizeof(t_graphics));
 	g->d = d;
 	g->int_img = mlx_new_image(d->conn, d->dim.w, d->dim.h);
 	g->fb = (int*)mlx_get_data_addr(g->int_img, &osef, &osef, &osef);
-	g->dim.w = d->dim.w;
-	g->dim.h = d->dim.h;
+	g->dim = d->dim;
+	i = 0;
+	max = g->dim.w * g->dim.h;
+	ft_memset(g->fb, 0, max);
+/*	g->z = malloc(4 * max);
+	while (i < max)
+	g->z[i++] = 0x3F800000;*/
 	g->color = 0x00FFFFFF;
 	return (g);
 }
@@ -73,7 +80,7 @@ t_point		ndc_to_screen(t_graphics *g, t_point ndc)
 		xoff = 0;
 		yoff = (g->dim.h - g->dim.w) >> 1;
 	}
-	return (t_point){ndc.w * ppn + xoff, g->dim.w - (ndc.h * ppn) + yoff};
+	return (t_point){ndc.w * ppn + xoff, g->dim.w - (ndc.h * ppn) + yoff, ndc.z};
 }
 
 void		draw_nline(t_graphics *g, t_vec4 n1, t_vec4 n2)
@@ -81,7 +88,7 @@ void		draw_nline(t_graphics *g, t_vec4 n1, t_vec4 n2)
 	t_point a;
 	t_point b;
 
-	a = ndc_to_screen(g, (t_point){(*n1)[0], (*n1)[1]});
-	b = ndc_to_screen(g, (t_point){(*n2)[0], (*n2)[1]});
+	a = ndc_to_screen(g, (t_point){(*n1)[0], (*n1)[1], (*n1)[2]});
+	b = ndc_to_screen(g, (t_point){(*n2)[0], (*n2)[1], (*n2)[2]});
 	draw_line(g, a, b);
 }

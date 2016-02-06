@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:36:55 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 02:27:03 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 03:57:15 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ typedef struct				s_point
 {
 	int						w;
 	int						h;
+	float					z;
 }							t_point;
 
 typedef struct				s_graphics
 {
 	void					*int_img;
+	float					*z;
 	int						*fb;
 	t_display				*d;
 	t_point					dim;
