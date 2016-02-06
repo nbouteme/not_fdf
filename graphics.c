@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:11 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:07:23 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:11:40 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_graphics	*new_graphics(t_display *d)
 	i = 0;
 	max = g->dim.w * g->dim.h;
 	ft_memset(g->fb, 0, max);
-/*	g->z = malloc(4 * max);
+	g->z = malloc(4 * max);
 	while (i < max)
-	g->z[i++] = 0x3F800000;*/
+	g->z[i++] = 0x3F800000;
 	g->color = 0x00FFFFFF;
 	return (g);
 }

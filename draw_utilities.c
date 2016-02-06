@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:36 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:07:41 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:12:25 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void		draw_point(t_graphics *g, t_point pos)
 	float		pro;
 
 	if (pos.z >= g->z[pos.h * g->dim.w + pos.w])
-	return ;
+		return ;
+	g->z[pos.h * g->dim.w + pos.w] = pos.z;
 	d = &g_d;
 	pro = (float)(pos.w - d->x1) / ABS(d->dist);
 	g->color = mix(d->c1, d->c2, d->dist > 0 ? pro : 1.0f - pro);

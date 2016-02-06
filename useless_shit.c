@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:51:15 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 04:07:16 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 04:11:52 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	clear_graphics(t_graphics *g)
 	i = 0;
 	max = g->dim.w * g->dim.h;
 	ft_memset(g->fb, 0, max << 2);
-/*	while (i < max)
-	g->z[i++] = 0x3F800000;*/
+	while (i < max)
+		g->z[i++] = 0x3F800000;
 }
