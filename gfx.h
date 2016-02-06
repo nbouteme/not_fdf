@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:36:55 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 01:35:36 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 02:27:03 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@
 # define ABS(x) ((x < 0)? -(x) : (x))
 
 typedef struct s_display	t_display;
+
+typedef struct				s_drawpara
+{
+	int x1;
+	int c1;
+	int c2;
+	int dist;
+}							t_drawpara;
 
 typedef struct				s_point
 {
@@ -76,5 +84,6 @@ void						draw_line_bare(t_graphics *g, t_point a, t_point b);
 void						render_line(t_display *d, t_mat4 mvp,
 										t_vertex *ptr);
 t_vec4						to_screen_space(t_point dim, t_vec4 n);
-
+//t_drawpara					*draw_para_ctl();
+extern t_drawpara g_d;
 #endif

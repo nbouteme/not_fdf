@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 16:42:29 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/27 17:10:24 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 02:10:43 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int				parse_vertex(char **file, t_sparse_model *m)
 {
 	t_vertex	v;
 
+	v.color = 0x00FFFFFF;
 	if (!parse_height(file, &v))
 		return (0);
 	if (*file[0] == ',' && !parse_color(file, &v))
