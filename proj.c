@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:02:05 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 05:59:33 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:26:54 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ t_mat4	mat4_lookat(t_cvec3 eye, t_cvec3 center, t_cvec3 up)
 	vec3_normalize(vec3_cross(&s, &f, up));
 	vec3_cross(&u, &s, &f);
 	ft_memcpy(look,
-			  &(float[4][4])
-			  {{s[0], u[0], -f[0], 0},
-			   {s[1], u[1], -f[1], 0},
-			   {s[2], u[2], -f[2], 0},
-			   {-vec3_dot(&s, eye), -vec3_dot(&u, eye), vec3_dot(&f, eye), 1}}
-			  , sizeof(look));
+			&(float[4][4])
+			{{s[0], u[0], -f[0], 0},
+				{s[1], u[1], -f[1], 0},
+				{s[2], u[2], -f[2], 0},
+				{-vec3_dot(&s, eye), -vec3_dot(&u, eye), vec3_dot(&f, eye), 1}},
+			sizeof(look));
 	return (&look);
 }
 

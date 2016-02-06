@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:57:42 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 06:21:54 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:30:02 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ t_mat4	new_mat4_from_data(const float *data)
 
 t_mat4	mat4_mult(const t_mat4 a, const t_mat4 b)
 {
-	static float c[4][4];
-	int		i;
-	int		j;
-	int		k;
+	static float	c[4][4];
+	int				i;
+	int				j;
+	int				k;
 
 	i = 0;
 	ft_memset(c, 0, sizeof(c));

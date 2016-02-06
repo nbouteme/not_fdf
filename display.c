@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:17:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 06:03:26 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:28:35 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		redraw(t_display *d)
 	float		mvp[4][4];
 
 	ft_memcpy(d->camera, mat4_lookat(d->position, d->center, vec3_up()),
-			  sizeof(*d->camera));
+			sizeof(*d->camera));
 	ft_memcpy(tmp, mat4_mult(d->camera, d->model->model), sizeof(tmp));
 	ft_memcpy(mvp, mat4_mult(&tmp, d->proj), sizeof(mvp));
 	render_line(d, &mvp, d->model->verts);

@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:50:36 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 05:33:48 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:28:51 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int			mix(int c1, int c2, float t)
 	return (ret);
 }
 
-float dist(const t_point *a, const t_point *b)
+float		dist(const t_point *a, const t_point *b)
 {
 	float as;
 	float bs;

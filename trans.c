@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 01:34:37 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 06:14:15 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 06:35:11 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,28 @@ static int	clip_plane(t_display *d, t_vec4 *rarb)
 
 void		render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
 {
-	t_vertex	a;
-	t_vertex	b;
-	t_vec4		papbrarb[4];
+	t_vertex	ab[2];
+	t_vec4		rar[4];
 	int			i;
 	t_drawpara	*p;
 
 	i = 0;
 	p = draw_para_ctl();
-	papbrarb[2] = &(float[]){0, 0, 0, 0};
-	papbrarb[3] = &(float[]){0, 0, 0, 0};
+	rar[2] = &(float[]){0, 0, 0, 0};
+	rar[3] = &(float[]){0, 0, 0, 0};
 	while (i < (2 * (2 * (d->model->h) * (d->model->w)
 					- d->model->w - d->model->h)))
 	{
-		a = ptr[d->model->elements[i++]];
-		b = ptr[d->model->elements[i++]];
-		papbrarb[0] = &(float[]){a.x, a.y, a.z, 1};
-		papbrarb[1] = &(float[]){b.x, b.y, b.z, 1};
-		ft_memcpy(papbrarb[2], mat4_m_vec4(mvp, papbrarb[0]), 16);
-		ft_memcpy(papbrarb[3], mat4_m_vec4(mvp, papbrarb[1]), 16);
-		p->c1 = a.color;
-		p->c2 = b.color;
-		if (clip_plane(d, papbrarb))
-			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1],
-						(*papbrarb[2])[2]},
-					(t_point){(*papbrarb[3])[0], (*papbrarb[3])[1],
-							(*papbrarb[3])[2]});
+		ab[0] = ptr[d->model->elements[i++]];
+		ab[1] = ptr[d->model->elements[i++]];
+		rar[0] = &(float[]){ab[0].x, ab[0].y, ab[0].z, 1};
+		rar[1] = &(float[]){ab[1].x, ab[1].y, ab[1].z, 1};
+		ft_memcpy(rar[2], mat4_m_vec4(mvp, rar[0]), 16);
+		ft_memcpy(rar[3], mat4_m_vec4(mvp, rar[1]), 16);
+		p->c1 = ab[0].color;
+		p->c2 = ab[1].color;
+		if (clip_plane(d, rar))
+			draw_line(d->g, (t_point){(*rar[2])[0], (*rar[2])[1], (*rar[2])[2]},
+					(t_point){(*rar[3])[0], (*rar[3])[1], (*rar[3])[2]});
 	}
 }
