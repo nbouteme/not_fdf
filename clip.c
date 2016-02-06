@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:47:34 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/05 03:13:29 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 01:33:24 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ static int	gen_rel(const t_point *a)
 	return (ret);
 }
 
-void	apply_clip(t_clip t, int rtmp)
+void		apply_clip(t_clip t, int rtmp)
 {
 	if (rtmp & TOP)
 	{
-		t.out->w = t.a[0] + (t.b[0] - t.a[0]) * (420.0f - t.a[1]) / (t.b[1] - t.a[1]);
+		t.out->w = t.a[0] + (t.b[0] - t.a[0]) * (420.0f - t.a[1]) /
+			(t.b[1] - t.a[1]);
 		t.out->h = 420.0f;
 	}
 	else if (rtmp & BOT)
@@ -40,7 +41,8 @@ void	apply_clip(t_clip t, int rtmp)
 	else if (rtmp & RIGHT)
 	{
 		t.out->w = 420.0f;
-		t.out->h = t.a[1] + (t.b[1] - t.a[1]) * (420.0f - t.a[0]) / (t.b[0] - t.a[0]);
+		t.out->h = t.a[1] + (t.b[1] - t.a[1]) * (420.0f - t.a[0]) /
+			(t.b[0] - t.a[0]);
 	}
 	else if (rtmp & LEFT)
 	{
@@ -55,7 +57,7 @@ int			clip(t_graphics *g, t_point *a, t_point *b)
 	int		rb;
 	int		rtmp;
 	int		ret;
-	float *vals[2];
+	float	*vals[2];
 
 	(void)g;
 	vals[0] = (float[]){a->w, a->h};

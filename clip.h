@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:49:19 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 18:49:49 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 01:32:04 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ typedef struct	s_clip
 	float	*b;
 }				t_clip;
 
-int clip(t_graphics *g, t_point *a, t_point *b);
+int				clip(t_graphics *g, t_point *a, t_point *b);
 
 #endif

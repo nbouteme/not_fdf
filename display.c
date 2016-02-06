@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 19:17:17 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/05 07:26:14 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 01:36:45 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,61 +24,7 @@ t_vec4		to_screen_space(t_point dim, t_vec4 n)
 	return (n);
 }
 
-static void clip_3d(t_vec4 v1, t_vec4 v2)
-{
-	float	n;
-	n = ((*v1)[3] - 0.01f) / ((*v1)[3] - (*v2)[3]);
-	(*v2)[0] = ((1.0f - n) * (*v1)[0]) + (n * (*v2)[0]);
-	(*v2)[1] = ((1.0f - n) * (*v1)[1]) + (n * (*v2)[1]);
-	(*v2)[2] = ((1.0f - n) * (*v1)[2]) + (n * (*v2)[2]);
-	//(*v2)[3] = ((1.0f - n) * (*v1)[3]) + (n * (*v2)[3]);
-	(*v2)[3] = 0.1f;
-}
-
-static int clip_plane(t_display *d, t_mat4 mvp, t_vec4 *rarb)
-{
-	t_vec4	a;
-	t_vec4	b;
-
-	a = mat4_m_vec4(mvp, rarb[0]);
-	b = mat4_m_vec4(mvp, rarb[1]);
-	rarb[2] = a;
-	rarb[3] = b;
-	if (((*a)[3] <= 0.1f) && ((*b)[3] <= 0.1f))
-		return (0);
-	if (((*a)[3] >= 0.1f) && ((*b)[3] < 0.1f))
-		clip_3d(a, b);
-	else if (((*a)[3] <= 0.1f) && ((*b)[3] > 0.1f))
-		clip_3d(b, a);
-	rarb[2] = to_screen_space(d->dim, vec4_sdiv(a, (*a)[3]));
-	rarb[3] = to_screen_space(d->dim, vec4_sdiv(b, (*b)[3]));
-	return (1);
-}
-
-static void	render_line(t_display *d, t_mat4 mvp, t_vertex *ptr)
-{
-	t_vertex	a;
-	t_vertex	b;
-	t_vec4		papbrarb[4];
-	int			i;
-
-	i = 0;
-	while (i < (2 * (2 * (d->model->h) * (d->model->w)
-					- d->model->w - d->model->h)))
-	{
-		a = ptr[d->model->elements[i++]];
-		b = ptr[d->model->elements[i++]];
-		papbrarb[0] = &(float[]){a.x, a.y, a.z, 1};
-		papbrarb[1] = &(float[]){b.x, b.y, b.z, 1};
-		if (clip_plane(d, mvp, papbrarb))
-			draw_line(d->g, (t_point){(*papbrarb[2])[0], (*papbrarb[2])[1]},
-					(t_point){(*papbrarb[3])[0], (*papbrarb[3])[1]});
-		free(papbrarb[2]);
-		free(papbrarb[3]);
-	}
-}
-
-static void	redraw(t_display *d)
+void		redraw(t_display *d)
 {
 	t_mat4		tmp;
 	t_mat4		mvp;
@@ -126,7 +72,6 @@ int			disp_handle_key(t_display *d)
 	if (is_key_pressed(KP_SUBTRACT))
 		++(*d->position)[2];
 	clear_graphics(d->g);
-	//disp_expose(d);
 	redraw(d);
 	return (0);
 }

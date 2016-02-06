@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 18:36:55 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/01/13 18:41:21 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/06 01:35:36 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,8 @@ void						clear_graphics(t_graphics *g);
 void						draw_line(t_graphics *g, t_point a, t_point b);
 int							disp_expose(t_display *d);
 void						draw_line_bare(t_graphics *g, t_point a, t_point b);
+void						render_line(t_display *d, t_mat4 mvp,
+										t_vertex *ptr);
+t_vec4						to_screen_space(t_point dim, t_vec4 n);
 
 #endif
