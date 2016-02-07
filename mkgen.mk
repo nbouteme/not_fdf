@@ -6,7 +6,7 @@
 #    By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 11:08:14 by nbouteme          #+#    #+#              #
-#    Updated: 2015/12/08 12:51:41 by nbouteme         ###   ########.fr        #
+#    Updated: 2016/02/07 03:22:07 by nbouteme         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -33,11 +33,14 @@ endif
 UNIQ := $(shell mktemp)
 $(shell make -s -C libft OBUILDLIBS="$(OBUILDLIBS)" > $(UNIQ))
 include $(UNIQ)
+DEP += mlx
+LDEP += minilibx
+PDEP += minilibx
 INCDIRS += -Ilibft/includes
 $(eval LIBDIRS += $(addprefix -L,$(LDEP)))
 $(eval LIBS += $(DEP))
 
-all: 
+all:
 	$(foreach dep,$(PDEP), $(if $(shell make -C $(dep) CFLAGS=$(CFLAGS) &> /dev/null), $(eval )))
 	@$(MAKE) -s $(NAME)
 %.o: %.c
