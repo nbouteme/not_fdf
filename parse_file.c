@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 16:42:29 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/06 03:16:46 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/09 09:27:14 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "parser.h"
 
 /*
-** file    := <line> <newline> [ <line> <newline> ]...
+** file    := <line> [ <newline> <line> [ <newline> ] ]...
 ** line    := <vertice> [ <space>... <vertice> ]
 ** vertice := <height> [,color]
 ** height  := entier en texte
@@ -66,15 +66,9 @@ int				parse_vertex(char **file, t_sparse_model *m)
 
 	v.color = 0x00FFFFFF;
 	if (!parse_height(file, &v))
-	{
-		puts("Malformed height");
 		return (0);
-	}
 	if (*file[0] == ',' && !parse_color(file, &v))
-	{
-		puts("Malformed color");
 		return (0);
-	}
 	ftext_lstpush_back(m->verts, ftext_lstnewelem(&v, sizeof(v)));
 	return (1);
 }
@@ -98,10 +92,7 @@ int				parse_line(char *line, t_sparse_model *m)
 	}
 	m->w = m->w ? m->w : tmp;
 	if (!(tmp == m->w))
-	{
-		printf("Different length");
 		return (0);
-	}
 	return (tmp == m->w);
 }
 
@@ -116,12 +107,11 @@ t_sparse_model	*parse_file(char **file)
 		if (!parse_line(*file++, m))
 			return (0);
 		m->h++;
-		if (!*file || ft_strcmp(*file++, "\n") != 0)
-			return (0);
 		if (!*file)
 			break ;
+		if (ft_strcmp(*file++, "\n") != 0)
+			file++;
 	}
-	printf("%d, %d\n", m->w, m->h);
 	if (m)
 		return (m->w * m->h > 1 ? m : 0);
 	return (0);
